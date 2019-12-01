@@ -6,9 +6,12 @@ using namespace std;
 int main()
 {
 
-	BigInteger A("0");
-	BigInteger B("0");
+	BigInteger A("10");
+	BigInteger B("000000000000000000000000000000000000010");
 
-	cout << (A > B);
+	cout << A.toString() << endl;
+	cout << B.toString() << endl;
+
+	cout << ((A == B) ? "True!" : "False!") << endl;
 
 }

@@ -79,15 +79,20 @@ bool BigInteger::operator > (BigInteger& other){
 	BigInt A = this->value;
 	BigInt B = other.value;
 
+	fixZero(A);
+	fixZero(B);
+
 	if(A.size() > B.size())
 		return true;
 
 	if(A.size() == B.size() and A.size() != 0){
 	
 		for(int i = 0; i < (int)A.size(); i++){
-		
+
 			if(A[i] > B[i])
 				return true;
+			else if(A[i] != B[i])
+				return false;
 		}
 	}
 
@@ -97,6 +102,45 @@ bool BigInteger::operator > (BigInteger& other){
 bool BigInteger::operator < (BigInteger& other){
 
 	return (other > *this);
+}
+
+bool BigInteger::operator == (BigInteger& other){
+
+	BigInt A = this->value;
+	BigInt B = other.value;
+
+	fixZero(A);
+	fixZero(B);
+
+	if(A.size() != B.size())
+		return false;
+
+	if(A.size() == B.size() and A.size() != 0){
+	
+		for(int i = 0; i < (int)A.size(); i++){
+			
+			if(A[i] != B[i])
+				return false;
+		}
+	}
+
+	return true;
+}
+
+bool BigInteger::operator != (BigInteger& other){
+
+	return !(*this == other);
+}
+
+bool BigInteger::operator >= (BigInteger& other){
+
+	return (*this == other) or (*this > other);
+}
+
+bool BigInteger::operator <= (BigInteger& other){
+
+	return (*this < other) or (*this == other);
+
 }
 
 // Metody pomocniczne

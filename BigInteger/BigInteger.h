@@ -29,9 +29,17 @@ public:
 
 	// Operatory
 
-	bool operator < (BigInteger& other);
-	
 	bool operator > (BigInteger& other);
+	
+	bool operator < (BigInteger& other);
+
+	bool operator == (BigInteger& other);
+
+	bool operator != (BigInteger& other);
+
+	bool operator >= (BigInteger& other);
+
+	bool operator <= (BigInteger& other);
 
 	// Metody pomocnicze
 
