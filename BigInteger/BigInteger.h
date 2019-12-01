@@ -11,20 +11,31 @@ typedef vector<int> BigInt;
 class BigInteger{
 
 public:
+	BigInt value;
+
+public:
 
 	// Inicjalizacje
+
+	BigInteger();
 	
-	static BigInt Init(string str);
+	BigInteger(string str);
 
-	static BigInt Init(long long integer);
-
-	static BigInt Init(unsigned int integer);
+	BigInteger(long long integer);
 
 	// Wypisywanie
 
-	static string toString(BigInt A);
+	string toString();
 
 	// Operatory
+
+	bool operator < (BigInteger& other);
+	
+	bool operator > (BigInteger& other);
+
+	// Metody pomocnicze
+
+	static void fixZero(BigInt& A); // Usuwanie 0 z vectora.
 	
 };
 

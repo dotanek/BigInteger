@@ -1,18 +1,20 @@
 ﻿#include "BigInteger.h"
 
-BigInt BigInteger::Init(string str){
+// Inicjalizacje 
 
-	// Inicjalizacje 
+BigInteger::BigInteger(){}
 
-	BigInt A;
+BigInteger::BigInteger(string str){
 
 	if(str.size() == 0)
-		return A;
+		*this = BigInteger();
+
+	BigInt A;
 
 	while(str.size() % 9 != 0)
 		str = "0" + str;
 
-	for(int i = 0; i < str.size(); i += 9){
+	for(int i = 0; i < (int)str.size(); i += 9){
 
 		int tmp = 0;
 
@@ -22,13 +24,10 @@ BigInt BigInteger::Init(string str){
 		A.push_back(tmp);
 	}
 
-	return A;
-
+	this->value = A;
 }
 
-BigInt BigInteger::Init(long long integer){
-
-	BigInt A;
+BigInteger::BigInteger(long long integer){
 
 	string str = "";
 
@@ -39,28 +38,22 @@ BigInt BigInteger::Init(long long integer){
 		integer /= 10;
 	}
 
-	A = Init(str);
-
-	return A;
-}
-
-BigInt BigInteger::Init(unsigned int integer){
-
-	return Init((long long)integer);
+	*this = BigInteger(str);	
 }
 
 // Wypisywanie
 
 
-string BigInteger::toString(BigInt A){
+string BigInteger::toString(){
 
 	string str = "";
 
+	BigInt A = this->value;
 
 	if(A.size() == 0)
 		return "0";
 
-	for(int i = 0; i < A.size(); i++){
+	for(int i = 0; i < (int)A.size(); i++){
 
 		int tmpInt = A[i];
 		string tmpStr = "";
@@ -79,3 +72,38 @@ string BigInteger::toString(BigInt A){
 }
 
 // Operatory 
+
+bool BigInteger::operator > (BigInteger& other){
+
+
+	BigInt A = this->value;
+	BigInt B = other.value;
+
+	if(A.size() > B.size())
+		return true;
+
+	if(A.size() == B.size() and A.size() != 0){
+	
+		for(int i = 0; i < (int)A.size(); i++){
+		
+			if(A[i] > B[i])
+				return true;
+		}
+	}
+
+	return false;
+}
+
+bool BigInteger::operator < (BigInteger& other){
+
+	return (other > *this);
+}
+
+// Metody pomocniczne
+
+void BigInteger::fixZero(BigInt& A){
+
+	while(A.size() > 0 and A[0] == 0)
+		A.erase(A.begin());
+}
+
