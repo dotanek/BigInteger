@@ -2,12 +2,18 @@
 
 // Inicjalizacje 
 
-BigInteger::BigInteger(){}
+BigInteger::BigInteger(){
+
+	this->value.push_back(0);
+}
 
 BigInteger::BigInteger(string str){
 
-	if(str.size() == 0)
-		*this = BigInteger();
+	if(str.size() == 0){
+
+		this->value.push_back(0);
+		return;
+	}
 
 	BigInt A;
 
@@ -15,13 +21,13 @@ BigInteger::BigInteger(string str){
 		str = "0" + str;
 
 	for(int i = 0; i < (int)str.size(); i += 9){
+	
+		int tmpInt = 0;
 
-		int tmp = 0;
-
-		for(int j = 0; j < 9; j++)
-			tmp = (tmp * 10) + (str[i+j] - '0');
-
-		A.push_back(tmp);
+		for(int j = i; j < i + 9; j++)
+			tmpInt = (tmpInt) * 10 + (str[j] - '0');
+		
+		A.insert(A.begin(), tmpInt);
 	}
 
 	this->value = A;
@@ -46,26 +52,37 @@ BigInteger::BigInteger(long long integer){
 
 string BigInteger::toString(){
 
-	string str = "";
-
 	BigInt A = this->value;
 
 	if(A.size() == 0)
 		return "0";
 
-	for(int i = 0; i < (int)A.size(); i++){
+	string str = "";
+
+	fixZero(A);
+
+	for(int i = 0; i < (int)A.size()-1; i++){
 
 		int tmpInt = A[i];
 		string tmpStr = "";
 
-		while(tmpInt > 0){
+		for(int j = 0; j < 9; j++){
 
 			tmpStr = (char)((tmpInt % 10) + '0') + tmpStr;
 
 			tmpInt /= 10;
 		}
 
-		str += tmpStr;
+		str = tmpStr + str;
+	}
+
+	int tmpInt = A.back();
+
+	while(tmpInt > 0){
+
+		str = (char)((tmpInt % 10) + '0') + str;
+
+		tmpInt /= 10;
 	}
 		
 	return str;
@@ -75,25 +92,27 @@ string BigInteger::toString(){
 
 bool BigInteger::operator > (BigInteger& other){
 
-
 	BigInt A = this->value;
 	BigInt B = other.value;
 
 	fixZero(A);
 	fixZero(B);
 
-	if(A.size() > B.size())
-		return true;
-
-	if(A.size() == B.size() and A.size() != 0){
+	if(A.size() != B.size())	
+		return (A.size() > B.size());	// Zakladamy ze oba nie sa puste, bo inaczej A = { 0 } > B = {}, mimo ze obie sa 0.
+		
+	if(A.size() == 0)
+		return false;
 	
-		for(int i = 0; i < (int)A.size(); i++){
+	while(A.size() > 0){
 
-			if(A[i] > B[i])
-				return true;
-			else if(A[i] != B[i])
-				return false;
-		}
+		if(A.back() > B.back())
+			return true;
+		else if(A.back() < B.back())
+			return false;
+		
+		A.pop_back();
+		B.pop_back();
 	}
 
 	return false;
@@ -115,13 +134,13 @@ bool BigInteger::operator == (BigInteger& other){
 	if(A.size() != B.size())
 		return false;
 
-	if(A.size() == B.size() and A.size() != 0){
-	
-		for(int i = 0; i < (int)A.size(); i++){
-			
-			if(A[i] != B[i])
-				return false;
-		}
+	while(A.size() > 0){
+
+		if(A.back() != B.back())
+			return false;
+
+		A.pop_back();
+		B.pop_back();
 	}
 
 	return true;
@@ -147,7 +166,7 @@ bool BigInteger::operator <= (BigInteger& other){
 
 void BigInteger::fixZero(BigInt& A){
 
-	while(A.size() > 0 and A[0] == 0)
-		A.erase(A.begin());
+	while(A.size() > 1 and A.back() == 0)
+		A.pop_back();
 }
 

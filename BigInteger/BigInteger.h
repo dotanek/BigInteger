@@ -43,7 +43,7 @@ public:
 
 	// Metody pomocnicze
 
-	static void fixZero(BigInt& A); // Usuwanie 0 z vectora.
+	static void fixZero(BigInt& A); // Usuwanie 0 z vectora.*/
 	
 };
 
