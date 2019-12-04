@@ -23,11 +23,15 @@ public:
 
 	BigInteger(long long integer);
 
+	BigInteger(BigInt bigInt);
+
 	// Wypisywanie
 
 	string toString();
 
 	// Operatory
+
+	// Porownania
 
 	bool operator > (BigInteger& other);
 	
@@ -40,6 +44,30 @@ public:
 	bool operator >= (BigInteger& other);
 
 	bool operator <= (BigInteger& other);
+
+	// Plus
+
+	BigInteger operator + (BigInteger& other);
+
+	BigInteger operator + (int other);
+
+	BigInteger operator ++ (int);
+
+	void operator += (BigInteger& other);
+
+	void operator += (int other);
+
+	// Minus
+
+	BigInteger operator - (BigInteger& other);
+
+	BigInteger operator - (int other);
+
+	BigInteger operator -- (int);
+
+	void operator -= (BigInteger& other);
+
+	void operator -= (int other);
 
 	// Metody pomocnicze
 

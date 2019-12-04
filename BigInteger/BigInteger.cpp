@@ -2,10 +2,7 @@
 
 // Inicjalizacje 
 
-BigInteger::BigInteger(){
-
-	this->value.push_back(0);
-}
+BigInteger::BigInteger(){}
 
 BigInteger::BigInteger(string str){
 
@@ -47,6 +44,11 @@ BigInteger::BigInteger(long long integer){
 	*this = BigInteger(str);	
 }
 
+BigInteger::BigInteger(BigInt bigInt){
+
+	this->value = bigInt;
+}
+
 // Wypisywanie
 
 
@@ -55,6 +57,8 @@ string BigInteger::toString(){
 	BigInt A = this->value;
 
 	if(A.size() == 0)
+		return "0";
+	else if(A.back() == 0)
 		return "0";
 
 	string str = "";
@@ -160,6 +164,132 @@ bool BigInteger::operator <= (BigInteger& other){
 
 	return (*this < other) or (*this == other);
 
+}
+
+// Plus
+
+BigInteger BigInteger::operator + (BigInteger& other){
+
+	BigInt A = this->value;
+	BigInt B = other.value;
+
+	fixZero(A);
+	fixZero(B);
+
+	BigInt C;
+
+	int carry = 0;
+
+	int size = (A.size() > B.size()) ? A.size() : B.size();
+
+	for(int i = 0; i < size; i++){
+	
+		if(i < (int)A.size())
+			carry += A[i];
+
+		if(i < (int)B.size())
+			carry += B[i];
+
+		C.push_back(carry % base);
+		carry /= base;
+	}
+
+	if(carry != 0)
+		C.push_back(carry);
+
+	fixZero(C);
+
+	return BigInteger(C);
+}
+
+BigInteger BigInteger::operator + (int other){
+
+	BigInteger B(other);
+
+	return *this + B;
+}
+
+BigInteger BigInteger::operator ++ (int){
+
+	*this = *this + 1;
+
+	return *this;
+}
+
+void BigInteger::operator += (BigInteger& other){
+
+	*this = *this + other;
+}
+
+void BigInteger::operator += (int other){
+
+	BigInteger B(other);
+
+	*this = *this + B;
+}
+
+// Minus
+
+BigInteger BigInteger::operator - (BigInteger& other){
+
+	if(*this < other)
+		return BigInteger(0);
+
+	BigInt A = this->value;
+	BigInt B = other.value;
+
+	fixZero(A);
+	fixZero(B);
+
+	BigInt C;
+
+	int carry = 0;
+
+	for(int i = 0; i < (int)A.size(); i++){
+	
+		carry += A[i] - ((i < (int)B.size()) ? B[i] : 0);
+
+		if(carry < 0){
+
+			C.push_back(carry + base);
+			carry = -1;
+		}
+		else{
+
+			C.push_back(carry);
+			carry = 0;
+		}
+	}
+
+	fixZero(C);
+
+	return BigInteger(C);
+}
+
+BigInteger BigInteger::operator - (int other){
+
+	BigInteger B(other);
+
+	return *this - B;
+}
+
+BigInteger BigInteger::operator -- (int){
+
+	*this = *this - 1;
+
+	return *this;
+}
+
+void BigInteger::operator -= (BigInteger& other){
+
+	*this = *this - other;
+}
+
+void BigInteger::operator -= (int other){
+
+	BigInteger B(other);
+
+	*this = *this - B;
 }
 
 // Metody pomocniczne
