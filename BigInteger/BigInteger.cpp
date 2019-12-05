@@ -292,6 +292,123 @@ void BigInteger::operator -= (int other){
 	*this = *this - B;
 }
 
+// Iloczyn
+
+BigInteger BigInteger::operator * (BigInteger& other){
+
+	BigInt A = this->value;
+	BigInt B = other.value;
+
+	fixZero(A);
+	fixZero(B);
+
+	BigInt C;
+
+	long long carry = 0;
+	long long multiply = 0;
+
+	C.assign(A.size() + B.size(), 0);
+
+	for(int i = 0; i < (int)A.size(); i++){
+	
+		carry = 0;
+
+		for(int j = 0; j < (int)B.size() or carry > 0; j++){
+
+			multiply = C[i + j] + carry + (long long)A[i] * ((j < (int)B.size()) ? B[j] : 0);
+
+			C[i + j] = multiply % base;
+			carry = multiply / base;
+		}
+	}
+
+	fixZero(C);
+
+	return BigInteger(C);
+}
+
+BigInteger BigInteger::operator * (int other){
+
+	BigInteger B(other);
+
+	return *this * B;
+}
+
+void BigInteger::operator *= (BigInteger& other){
+
+	*this = *this * other;
+}
+
+void BigInteger::operator *= (int other){
+
+	BigInteger B(other);
+
+	*this = *this * B;
+}
+
+// Modulo
+
+BigInteger BigInteger::operator % (BigInteger other) {
+
+	BigInt A = this->value;
+	BigInt B = other.value;
+
+	fixZero(A);
+	fixZero(B);
+
+	if(B.size() == 0)
+		return BigInteger(0);	 // Nie dozwolone dzialanie (MOD 0).
+	else if(B.size() == 1){
+
+		if(B[0] == 0)
+			return BigInteger(0); // J.w.
+	}
+
+	BigInt C;
+	BigInteger tmp1;
+	BigInteger tmp2;
+
+	for(int i = A.size() - 1; i >= 0; i--){
+
+		C.insert(C.begin(), A[i]);
+
+		int x = 0, left = 0, right = base;
+
+		while(left <= right){
+
+			int middle = (left + right) >> 1; // Przesuniecie bitow w prawo o 1 - dziala jak podzielenie przez 2.
+
+			tmp1 = BigInteger(B) * middle;
+			tmp2 = BigInteger(C);
+
+			if(tmp1 > tmp2){
+
+				x = middle;
+				right = middle - 1;
+			}
+			else
+				left = middle + 1;
+		}
+
+		tmp1 = BigInteger(C);
+		tmp2 = BigInteger(B) * (x - 1);
+
+		C = (tmp1 - tmp2).value;
+	}
+
+	fixZero(C);
+
+	return BigInteger(C);
+}
+
+/*int BigInteger::operator % (int other) {
+
+	
+
+	return modulo;
+}*/
+
+
 // Metody pomocniczne
 
 void BigInteger::fixZero(BigInt& A){

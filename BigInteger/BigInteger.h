@@ -69,6 +69,21 @@ public:
 
 	void operator -= (int other);
 
+	// Iloczyn
+
+	BigInteger operator * (BigInteger& other);
+
+	BigInteger operator * (int other);
+
+	void operator *= (BigInteger& other);
+
+	void operator *= (int other);
+
+	// Modulo
+
+	BigInteger operator % (BigInteger other);
+	int operator % (int other);
+
 	// Metody pomocnicze
 
 	static void fixZero(BigInt& A); // Usuwanie 0 z vectora.*/
