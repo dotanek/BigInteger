@@ -11,7 +11,7 @@ int main()
 	BigInteger A("3432432432");
 	BigInteger B("5");
 
-	/*cout << "A = " << A.toString() << endl;
+	cout << "A = " << A.toString() << endl;
 	cout << "B = " << B.toString() << endl;
 
 	cout << "Greater: " << ((A > B) ? "True!" : "False.") << endl;
@@ -24,6 +24,7 @@ int main()
 	cout << "A + B = " << (A + B).toString() << endl;
 	cout << "A - B = " << (A - B).toString() << endl;
 	cout << "A * B = " << (A * B).toString() << endl;
+	cout << "A % B = " << (A % B).toString() << endl;
 	A++;
 	cout << "A++: " << A.toString() << endl;
 	A--;
@@ -33,8 +34,7 @@ int main()
 	A -= 10;
 	cout << "A -= 10: " << A.toString() << endl;
 	A *= 10;
-	cout << "A *= 10: " << A.toString() << endl;*/
-
+	cout << "A *= 10: " << A.toString() << endl;
 
 	return 0;
 }

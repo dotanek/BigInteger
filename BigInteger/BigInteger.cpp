@@ -1,4 +1,5 @@
 ﻿#include "BigInteger.h"
+#include <string>
 
 // Inicjalizacje 
 
@@ -32,16 +33,27 @@ BigInteger::BigInteger(string str){
 
 BigInteger::BigInteger(long long integer){
 
-	string str = "";
+	if(integer == 0)
+		this->value.push_back(0);
 
-	while(integer > 0){
-		
-		str = (char)((integer % 10) + '0') + str;
+	BigInt A;
 
-		integer /= 10;
+	string str = std::to_string(integer);
+
+	while(str.size() % 9 != 0)
+		str = "0" + str;
+
+	for(int i = 0; i < (int)str.size(); i += 9){
+
+		int tmpInt = 0;
+
+		for(int j = i; j < i + 9; j++)
+			tmpInt = (tmpInt) * 10 + (str[j] - '0');
+
+		A.insert(A.begin(), tmpInt);
 	}
 
-	*this = BigInteger(str);	
+	this->value = A;
 }
 
 BigInteger::BigInteger(BigInt bigInt){
@@ -94,7 +106,7 @@ string BigInteger::toString(){
 
 // Operatory 
 
-bool BigInteger::operator > (BigInteger& other){
+bool BigInteger::operator > (const BigInteger& other) const {
 
 	BigInt A = this->value;
 	BigInt B = other.value;
@@ -122,12 +134,12 @@ bool BigInteger::operator > (BigInteger& other){
 	return false;
 }
 
-bool BigInteger::operator < (BigInteger& other){
+bool BigInteger::operator < (const BigInteger& other) const {
 
 	return (other > *this);
 }
 
-bool BigInteger::operator == (BigInteger& other){
+bool BigInteger::operator == (const BigInteger& other) const {
 
 	BigInt A = this->value;
 	BigInt B = other.value;
@@ -150,17 +162,17 @@ bool BigInteger::operator == (BigInteger& other){
 	return true;
 }
 
-bool BigInteger::operator != (BigInteger& other){
+bool BigInteger::operator != (const BigInteger& other) const {
 
 	return !(*this == other);
 }
 
-bool BigInteger::operator >= (BigInteger& other){
+bool BigInteger::operator >= (const BigInteger& other) const {
 
 	return (*this == other) or (*this > other);
 }
 
-bool BigInteger::operator <= (BigInteger& other){
+bool BigInteger::operator <= (const BigInteger& other) const {
 
 	return (*this < other) or (*this == other);
 
@@ -168,7 +180,7 @@ bool BigInteger::operator <= (BigInteger& other){
 
 // Plus
 
-BigInteger BigInteger::operator + (BigInteger& other){
+BigInteger BigInteger::operator + (const BigInteger& other) const {
 
 	BigInt A = this->value;
 	BigInt B = other.value;
@@ -202,7 +214,7 @@ BigInteger BigInteger::operator + (BigInteger& other){
 	return BigInteger(C);
 }
 
-BigInteger BigInteger::operator + (int other){
+BigInteger BigInteger::operator + (const int other) const {
 
 	BigInteger B(other);
 
@@ -216,7 +228,7 @@ BigInteger BigInteger::operator ++ (int){
 	return *this;
 }
 
-void BigInteger::operator += (BigInteger& other){
+void BigInteger::operator += (const BigInteger& other){
 
 	*this = *this + other;
 }
@@ -230,7 +242,7 @@ void BigInteger::operator += (int other){
 
 // Minus
 
-BigInteger BigInteger::operator - (BigInteger& other){
+BigInteger BigInteger::operator - (const BigInteger& other) const {
 
 	if(*this < other)
 		return BigInteger(0);
@@ -266,26 +278,26 @@ BigInteger BigInteger::operator - (BigInteger& other){
 	return BigInteger(C);
 }
 
-BigInteger BigInteger::operator - (int other){
+BigInteger BigInteger::operator - (const int other) const {
 
 	BigInteger B(other);
 
 	return *this - B;
 }
 
-BigInteger BigInteger::operator -- (int){
+BigInteger BigInteger::operator -- (const int){
 
 	*this = *this - 1;
 
 	return *this;
 }
 
-void BigInteger::operator -= (BigInteger& other){
+void BigInteger::operator -= (const BigInteger& other){
 
 	*this = *this - other;
 }
 
-void BigInteger::operator -= (int other){
+void BigInteger::operator -= (const int other){
 
 	BigInteger B(other);
 
@@ -294,7 +306,7 @@ void BigInteger::operator -= (int other){
 
 // Iloczyn
 
-BigInteger BigInteger::operator * (BigInteger& other){
+BigInteger BigInteger::operator * (const BigInteger& other) const {
 
 	BigInt A = this->value;
 	BigInt B = other.value;
@@ -327,14 +339,14 @@ BigInteger BigInteger::operator * (BigInteger& other){
 	return BigInteger(C);
 }
 
-BigInteger BigInteger::operator * (int other){
+BigInteger BigInteger::operator * (const int other) const {
 
 	BigInteger B(other);
 
 	return *this * B;
 }
 
-void BigInteger::operator *= (BigInteger& other){
+void BigInteger::operator *= (const BigInteger& other){
 
 	*this = *this * other;
 }
@@ -348,7 +360,7 @@ void BigInteger::operator *= (int other){
 
 // Modulo
 
-BigInteger BigInteger::operator % (BigInteger other) {
+BigInteger BigInteger::operator % (const BigInteger& other) const {
 
 	BigInt A = this->value;
 	BigInt B = other.value;
@@ -390,10 +402,7 @@ BigInteger BigInteger::operator % (BigInteger other) {
 				left = middle + 1;
 		}
 
-		tmp1 = BigInteger(C);
-		tmp2 = BigInteger(B) * (x - 1);
-
-		C = (tmp1 - tmp2).value;
+		C = (BigInteger(C) - BigInteger(B) * (x - 1)).value;
 	}
 
 	fixZero(C);
@@ -401,12 +410,12 @@ BigInteger BigInteger::operator % (BigInteger other) {
 	return BigInteger(C);
 }
 
-/*int BigInteger::operator % (int other) {
+BigInteger BigInteger::operator % (const int other) const {
 
-	
+	BigInteger B(other);
 
-	return modulo;
-}*/
+	return *this % B;
+}
 
 
 // Metody pomocniczne

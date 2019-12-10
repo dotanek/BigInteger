@@ -33,56 +33,57 @@ public:
 
 	// Porownania
 
-	bool operator > (BigInteger& other);
+	bool  operator > (const BigInteger& other) const;
 	
-	bool operator < (BigInteger& other);
+	bool operator < (const BigInteger& other) const;
 
-	bool operator == (BigInteger& other);
+	bool operator == (const BigInteger& other) const;
 
-	bool operator != (BigInteger& other);
+	bool operator != (const BigInteger& other) const;
 
-	bool operator >= (BigInteger& other);
+	bool operator >= (const BigInteger& other) const;
 
-	bool operator <= (BigInteger& other);
+	bool operator <= (const BigInteger& other) const;
 
 	// Plus
 
-	BigInteger operator + (BigInteger& other);
+	BigInteger operator + (const BigInteger& other) const;
 
-	BigInteger operator + (int other);
+	BigInteger operator + (const int other) const;
 
-	BigInteger operator ++ (int);
+	BigInteger operator ++ (const int);
 
-	void operator += (BigInteger& other);
+	void operator += (const BigInteger& other);
 
-	void operator += (int other);
+	void operator += (const int other);
 
 	// Minus
 
-	BigInteger operator - (BigInteger& other);
+	BigInteger operator - (const BigInteger& other) const;
 
-	BigInteger operator - (int other);
+	BigInteger operator - (const int other) const;
 
-	BigInteger operator -- (int);
+	BigInteger operator -- (const int);
 
-	void operator -= (BigInteger& other);
+	void operator -= (const BigInteger& other);
 
-	void operator -= (int other);
+	void operator -= (const int other);
 
 	// Iloczyn
 
-	BigInteger operator * (BigInteger& other);
+	BigInteger operator * (const BigInteger& other) const;
 
-	BigInteger operator * (int other);
+	BigInteger operator * (const int other) const;
 
-	void operator *= (BigInteger& other);
+	void operator *= (const BigInteger& other);
 
-	void operator *= (int other);
+	void operator *= (const int other);
 
 	// Modulo
 
-	BigInteger operator % (BigInteger other);
-	int operator % (int other);
+	BigInteger operator % (const BigInteger& other) const;
+
+	BigInteger operator % (const int other) const;
 
 	// Metody pomocnicze
 
