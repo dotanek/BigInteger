@@ -1,5 +1,6 @@
 ﻿#include "BigInteger.h"
 #include <string>
+#include <iostream>
 
 // Inicjalizacje 
 
@@ -417,6 +418,96 @@ BigInteger BigInteger::operator % (const int other) const {
 	return *this % B;
 }
 
+void BigInteger::operator %= (const BigInteger& other){
+
+	*this = *this * other;
+}
+
+void BigInteger::operator %= (const int other){
+	
+	BigInteger B(other);
+
+	*this = *this * B;
+}
+
+// Iloraz
+
+BigInteger BigInteger::operator / (const BigInteger& other) const {
+
+	BigInteger A = this->value;
+	BigInteger B = other;
+	BigInteger C(0);
+	vector<BigInteger> tmpB;
+
+	fixZero(A.value);
+	fixZero(B.value);
+
+	if(A == BigInteger(0))
+		return BigInteger(0);
+
+	if(B == BigInteger(0))
+		return BigInteger(0);
+
+	tmpB.push_back(B);
+
+	while(A > tmpB.back()){
+
+		tmpB.push_back(tmpB.back() * 10);
+	}
+
+	while(tmpB.size() > 0){
+
+		C *= 10;
+
+		while(A >= tmpB.back()){
+
+			A -= tmpB.back();
+			C++;
+		}
+
+		tmpB.pop_back();
+	}
+
+	return C;
+
+	/*
+	
+	STARE WOOOOOLNE
+	
+	BigInteger A;
+	BigInteger B = other;
+	BigInteger C(0);
+
+	int i = 0;
+
+	int size = this->value.size()-1;
+
+	while(size >= 0){
+	
+		A.pushFront(this->value[size]);
+
+		C *= base;
+
+		i++;
+
+		while(A >= B){
+		
+			A -= B;
+			C++;
+
+			if(i > 2)cout << A.toString() << endl;
+		}
+		
+		size--;
+	}
+	
+	return C;*/
+}
+
+BigInteger BigInteger::operator / (const int other) const {
+
+	return *this / BigInteger(other);
+}
 
 // Metody pomocniczne
 
@@ -424,5 +515,20 @@ void BigInteger::fixZero(BigInt& A){
 
 	while(A.size() > 1 and A.back() == 0)
 		A.pop_back();
+}
+
+int BigInteger::size(){
+
+	return this->value.size();
+}
+
+void BigInteger::pushBack(int value){
+
+	this->value.push_back(value);
+}
+
+void BigInteger::pushFront(int value){
+
+	this->value.insert(this->value.begin(),value);
 }
 

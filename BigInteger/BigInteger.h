@@ -10,7 +10,7 @@ typedef vector<int> BigInt;
 
 class BigInteger{
 
-public:
+private:
 	BigInt value;
 
 public:
@@ -85,9 +85,26 @@ public:
 
 	BigInteger operator % (const int other) const;
 
+	void operator %= (const BigInteger& other);
+
+	void operator %= (const int other);
+
+	// Iloraz
+
+	BigInteger operator / (const BigInteger& other) const;
+
+	BigInteger operator / (const int other) const;
+
+	BigInteger divSmall(BigInteger B) const;
+
+
 	// Metody pomocnicze
 
 	static void fixZero(BigInt& A); // Usuwanie 0 z vectora.*/
+
+	int size();
+	void pushBack(int value);
+	void pushFront(int value);
 	
 };
 
