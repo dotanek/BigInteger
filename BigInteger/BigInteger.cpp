@@ -217,9 +217,7 @@ BigInteger BigInteger::operator + (const BigInteger& other) const {
 
 BigInteger BigInteger::operator + (const int other) const {
 
-	BigInteger B(other);
-
-	return *this + B;
+	return *this + BigInteger(other);
 }
 
 BigInteger BigInteger::operator ++ (int){
@@ -236,9 +234,7 @@ void BigInteger::operator += (const BigInteger& other){
 
 void BigInteger::operator += (int other){
 
-	BigInteger B(other);
-
-	*this = *this + B;
+	*this = *this + BigInteger(other);
 }
 
 // Minus
@@ -281,9 +277,7 @@ BigInteger BigInteger::operator - (const BigInteger& other) const {
 
 BigInteger BigInteger::operator - (const int other) const {
 
-	BigInteger B(other);
-
-	return *this - B;
+	return *this - BigInteger(other);
 }
 
 BigInteger BigInteger::operator -- (const int){
@@ -302,7 +296,7 @@ void BigInteger::operator -= (const int other){
 
 	BigInteger B(other);
 
-	*this = *this - B;
+	*this = *this - BigInteger(other);
 }
 
 // Iloczyn
@@ -342,9 +336,7 @@ BigInteger BigInteger::operator * (const BigInteger& other) const {
 
 BigInteger BigInteger::operator * (const int other) const {
 
-	BigInteger B(other);
-
-	return *this * B;
+	return *this * BigInteger(other);
 }
 
 void BigInteger::operator *= (const BigInteger& other){
@@ -354,9 +346,7 @@ void BigInteger::operator *= (const BigInteger& other){
 
 void BigInteger::operator *= (int other){
 
-	BigInteger B(other);
-
-	*this = *this * B;
+	*this = *this * BigInteger(other);
 }
 
 // Modulo
@@ -381,7 +371,7 @@ BigInteger BigInteger::operator % (const BigInteger& other) const {
 	BigInteger tmp1;
 	BigInteger tmp2;
 
-	for(int i = A.size() - 1; i >= 0; i--){
+	for(int i = (int)A.size() - 1; i >= 0; i--){
 
 		C.insert(C.begin(), A[i]);
 
@@ -391,10 +381,7 @@ BigInteger BigInteger::operator % (const BigInteger& other) const {
 
 			int middle = (left + right) >> 1; // Przesuniecie bitow w prawo o 1 - dziala jak podzielenie przez 2.
 
-			tmp1 = BigInteger(B) * middle;
-			tmp2 = BigInteger(C);
-
-			if(tmp1 > tmp2){
+			if(BigInteger(B) * middle > BigInteger(C)){
 
 				x = middle;
 				right = middle - 1;
@@ -507,6 +494,73 @@ BigInteger BigInteger::operator / (const BigInteger& other) const {
 BigInteger BigInteger::operator / (const int other) const {
 
 	return *this / BigInteger(other);
+}
+
+void BigInteger::operator /= (const BigInteger& other){
+
+	*this = *this / other;
+}
+
+void BigInteger::operator /= (const int other){
+
+	*this = *this / BigInteger(other);
+}
+
+// Potega
+
+BigInteger BigInteger::operator ^ (const BigInteger& other) const {
+
+	BigInteger A = this->value;
+	BigInteger B = other;
+
+	fixZero(A.value);
+	fixZero(B.value);
+
+	if(A.size() == 0 or A <= 0)
+		return BigInteger(0);
+
+	if(B.size() == 0 or B <= 0)
+		return BigInteger(1);
+
+	vector<bool> wasEven;
+	BigInteger lastValue = A;
+	BigInteger firstValue = A;
+	BigInteger C(0);
+
+	while(B.value[0] > 1){
+	
+		if(B.value[0] % 2 == 0){
+		
+			wasEven.push_back(true);
+			B /= 2;
+
+		}
+		else{
+		
+			wasEven.push_back(false);
+			B--;
+		
+		}
+	
+	}
+
+	while(wasEven.size() > 0){
+	
+		if(wasEven.back())
+			lastValue *= lastValue;
+		else
+			lastValue *= firstValue;
+
+		wasEven.pop_back();
+
+	}
+
+	return lastValue;
+}
+
+BigInteger BigInteger::operator ^ (const int other) const {
+
+	return *this^BigInteger(other);
 }
 
 // Metody pomocniczne

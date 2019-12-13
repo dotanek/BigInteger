@@ -95,8 +95,15 @@ public:
 
 	BigInteger operator / (const int other) const;
 
-	BigInteger divSmall(BigInteger B) const;
+	void operator /= (const BigInteger& other);
 
+	void operator /= (const int other);
+
+	// Potega
+
+	BigInteger operator ^ (const BigInteger& other) const;
+
+	BigInteger operator ^ (const int other) const;
 
 	// Metody pomocnicze
 
