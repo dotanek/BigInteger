@@ -525,7 +525,6 @@ BigInteger BigInteger::operator ^ (const BigInteger& other) const {
 	vector<bool> wasEven;
 	BigInteger lastValue = A;
 	BigInteger firstValue = A;
-	BigInteger C(0);
 
 	while(B.value[0] > 1){
 	
@@ -561,6 +560,61 @@ BigInteger BigInteger::operator ^ (const BigInteger& other) const {
 BigInteger BigInteger::operator ^ (const int other) const {
 
 	return *this^BigInteger(other);
+}
+
+// Modular exponent
+
+BigInteger BigInteger::modularExponent(BigInteger A, BigInteger B, BigInteger C) { // A podstawa, B wykladnik, C modulo
+
+	BigInteger squareResult = A % C;
+	BigInteger singleResult(1);
+
+	while(B.value[0] > 1){
+
+		if(B.value[0] % 2 == 0){
+
+			B = B.rightShift();
+		
+			squareResult = (squareResult^2) % C;
+			
+		}
+		else{
+		
+			B--;
+			singleResult = (singleResult * squareResult) % C;
+		}
+	}
+
+	return (squareResult*singleResult) % C;
+}
+
+BigInteger BigInteger::rightShift(){
+
+	BigInteger A = *this;
+	bool lastCarry = false;
+	bool currentCarry = false;
+	fixZero(A.value);
+
+	for(int i = (int)A.value.size()-1; i >= 0 ; i--){
+	
+		if (A.value[i] % 2 == 0){
+		
+			currentCarry = false;
+		}
+		else
+			currentCarry = true;
+
+		A.value[i] = A.value[i] >> 1;
+
+		if(lastCarry)
+			A.value[i] += 500000000;
+
+		lastCarry = currentCarry;
+	}
+
+	fixZero(A.value);
+	
+	return A;
 }
 
 // Metody pomocniczne

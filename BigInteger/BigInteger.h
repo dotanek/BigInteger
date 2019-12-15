@@ -105,6 +105,14 @@ public:
 
 	BigInteger operator ^ (const int other) const;
 
+	// Przesuniêcia bitowe
+
+	BigInteger rightShift();
+
+	// Modular exponent
+
+	static BigInteger modularExponent(BigInteger A, BigInteger B, BigInteger C); // A podstawa, B wykladnik, C modulo
+
 	// Metody pomocnicze
 
 	static void fixZero(BigInt& A); // Usuwanie 0 z vectora.*/
